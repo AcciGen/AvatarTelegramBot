@@ -86,7 +86,8 @@ namespace AvatarBot
                 if (string.IsNullOrWhiteSpace(seed))
                 {
                     await telegramBotClient.SendMessage(chatId: chatId,
-                                                        text: "Iltimos, buyruqdan keyin matn (seed) kiriting. Misol: /fun-emoji Ali",
+                                                        text: "Iltimos, buyruqdan keyin matn (seed) kiriting.\nMisol: `/fun-emoji` Ali",
+                                                        parseMode: ParseMode.Markdown,
                                                         cancellationToken: cancellationToken);
 
                     LogToConsole(chatId, command, EStatus.None.ToString(), EStatus.SeedNotProvided.ToString());
@@ -115,6 +116,10 @@ namespace AvatarBot
                         await telegramBotClient.SendPhoto(chatId: chatId,
                                                           photo: InputFile.FromStream(stream, fileName: $"{seed}.png"),
                                                           cancellationToken: cancellationToken);
+
+                        await telegramBotClient.SendMessage(chatId: chatId,
+                                                            text: $"{seed} so'zidan yaratilgan PNG rasm yuboriladi",
+                                                            cancellationToken: cancellationToken);
 
                         LogToConsole(chatId, command, seed, $"{statusCode} - {EStatus.Success.ToString()}");
                     }
@@ -152,7 +157,7 @@ namespace AvatarBot
                     await telegramBotClient.SendMessage(chatId: chatId,
                                                         text: "🧠 *Botdan foydalanish yo'riqnomasi:*\n\n" +
                                                               "Quyidagi buyruqlardan birini yuboring va orqasidan tasodifiy so'z (seed) yozing:\n" +
-                                                              "🔹 `/fun-emoji` – Emoji asosida kulgili avatar\n" +
+                                                              "🔹 `/fun-emoji` - Emoji asosida kulgili avatar\n" +
                                                               "🔹 `/bottts` – Robot uslubidagi avatar\n" +
                                                               "🔹 `/avataaars` – Oddiy insoniy avatarlar\n" +
                                                               "🔹 `/pixel-art` – Pixel uslubidagi avatar\n\n" +
@@ -166,6 +171,7 @@ namespace AvatarBot
                 {
                     await telegramBotClient.SendMessage(chatId: chatId,
                                                         text: "Noma'lum buyruq. Quyidagilardan birini ishlating: `/fun-emoji`, `/bottts`, `/avataaars`, `/pixel-art`, `/help`",
+                                                        parseMode: ParseMode.Markdown,
                                                         cancellationToken: cancellationToken);
 
                     LogToConsole(chatId, command, EStatus.None.ToString(), $"{EStatus.UnknownCommand.ToString()}");
